@@ -1,5 +1,5 @@
 /*
-https://raw.githubusercontent.com/MoPoQAQ/Script/main/Me/jx_cfd.js
+https://raw.githubusercontent.com/ziye12/JavaScript/master/flwhbziye.js
 */
 const exec = require("child_process").execSync;
 const fs = require("fs");
@@ -30,11 +30,12 @@ async function changeFiele(content, cookie) {
     content = content.replace("Env(jsname)", `Env(jsname);\nconst notify = $.isNode() ? require('./sendNotify') : '';`)
     content  = content.replace("$.getdata(flwhburlKey)", JSON.stringify(cookie.split("\n")[0]))
     content  = content.replace("$.getdata(flwhbheaderKey)", JSON.stringify(cookie.split("\n")[1]))
+    content  = content.replace(/let isGetCookie = .*?/, "let isGetCookie = false")
     content = content.replace("$.msg(jsname,''", "notify.sendNotify(jsname")
     
     //替换源脚本中推送函数阻止推送
     //content = content.replace("require('./sendNotify')", "{sendNotify:function(){},serverNotify:function(){},BarkNotify:function(){},tgBotNotify:function(){},ddBotNotify:function(){},iGotNotify:function(){}}")
-    //console.log(content);
+    console.log(content);
     await fs.writeFileSync('./execute.js', content, 'utf8')
 }
 
@@ -110,7 +111,7 @@ async function start() {
         console.log("请填写 SYNCURL 后在继续");
         return;
     }
-    Cookies = Secrets.COOKIE_FLW.split("&");
+    Cookies = Secrets.COOKIE_FLW.split("\n\n");
     console.log(`当前共${Cookies.length}个账号需要执行`);
     // 下载最新代码
     await downFile();
